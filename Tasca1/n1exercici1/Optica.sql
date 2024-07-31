@@ -1,7 +1,3 @@
-DROP DATABASE IF EXISTS optica;
-CREATE DATABASE optica; 
-USE optica;
-
 CREATE TABLE `supplier` (
   `supplier_id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -24,12 +20,19 @@ CREATE TABLE `address` (
 
 CREATE TABLE `glasses` (
   `glasses_id` integer PRIMARY KEY AUTO_INCREMENT,
-  `brand` varchar(45) NOT NULL,
-  `power` double NOT NULL,
+  `brand` integer NOT NULL,
+  `power_left` double NOT NULL,
+  `power_right` double NOT NULL,
   `frame_colour` varchar(45) NOT NULL,
-  `glass_colour` varchar(45) NOT NULL,
+  `glass_colour_left` varchar(45) NOT NULL,
+  `glass_colour_right` varchar(45) NOT NULL,
   `price` double NOT NULL,
-  `frame` enum("metal","paste","floating") NOT NULL,
+  `frame` enum("metal","paste","floating") NOT NULL
+);
+
+CREATE TABLE `brand` (
+  `brand_id` integer PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
   `supplier_id` integer NOT NULL
 );
 
@@ -51,14 +54,17 @@ CREATE TABLE `sale` (
   `sale_id` integer PRIMARY KEY AUTO_INCREMENT,
   `sold_to_id` integer NOT NULL,
   `sold_by_id` integer NOT NULL,
-  `glasses_id` integer NOT NULL
+  `glasses_id` integer NOT NULL,
+  `date` timestamp NOT NULL
 );
 
 ALTER TABLE `supplier` ADD FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`);
 
 ALTER TABLE `client` ADD FOREIGN KEY (`address_id`) REFERENCES `address` (`address_id`);
 
-ALTER TABLE `glasses` ADD FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`supplier_id`);
+ALTER TABLE `brand` ADD FOREIGN KEY (`supplier_id`) REFERENCES `supplier` (`supplier_id`);
+
+ALTER TABLE `glasses` ADD FOREIGN KEY (`brand`) REFERENCES `brand` (`brand_id`);
 
 ALTER TABLE `client` ADD FOREIGN KEY (`referred_by_id`) REFERENCES `client` (`client_id`);
 
