@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS optica;
+CREATE DATABASE optica;
+USE optica;
+
 CREATE TABLE `supplier` (
   `supplier_id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
